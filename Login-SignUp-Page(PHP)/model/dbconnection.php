@@ -1,25 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+// Database credentials
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "login";
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DBconnection</title>
-</head>
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-<body>
-    <?php
-    $sname = "localhost";
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-    $unmae = "root";
+// Table name
+$tableName = "users";
 
-    $password = "";
+// Check if table exists
+$tableExists = $conn->query("SHOW TABLES LIKE '$tableName'")->num_rows > 0;
 
-    $db_name = "login";
+// If table does not exist, create it
+if (!$tableExists) {
+    $sql = "CREATE TABLE $tableName (
+        id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        first_name VARCHAR(255),
+        last_name VARCHAR(255),
+        gender VARCHAR(255),
+        email VARCHAR(255),
+        username VARCHAR(255),
+        password VARCHAR(255),
+        type VARCHAR(10)
+    )";
 
-    $conn = mysqli_connect($sname, $unmae, $password, $db_name);
-    ?>
-</body>
+    if ($conn->query($sql) === TRUE) {
+        echo "Table $tableName created successfully";
+    } else {
+        echo "Error creating table: " . $conn->error;
+    }
+}
 
-</html>
+// Close the connection
+?>

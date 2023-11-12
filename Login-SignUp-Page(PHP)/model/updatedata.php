@@ -1,43 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+require('Model/DbConnection.php');
+class Update_Data{
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>update</title>
-    <style>
-        body {
-            background-color: lightgrey;
-        }
-    </style>
-</head>
+    public $Conn;
+    public $id;
+    public $FirstName;
+    public $LastName;
+    public $Email;
+    public $Username;
+    public $Password;
+    public $Type;
 
-<body>
-    <center>
-        <?php
-        require('model/dbconnection.php');
+    public function __construct(){
+        $DB_Connection_Instance=new DB_Connection();
+        $this->Conn=$DB_Connection_Instance->conn;
 
-        $id = $_REQUEST['getID'];
-        $first_name =  $_POST['fname'];
-        $last_name = $_POST['lname'];
-        $email = $_POST['email'];
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $type = $_POST['type'];
+        $this->id = $_REQUEST['getID'];
+        $this->FirstName =  $_POST['fname'];
+        $this->LastName = $_POST['lname'];
+        $this->Email = $_POST['email'];
+        $this->Username = $_POST['username'];
+        $this->Password = $_POST['password'];
+        $this->Type = $_POST['type'];
+    }
 
-        $sql = "UPDATE users SET first_name='" . $first_name . "',last_name='" . $last_name . "', email='" . $email . "',username='" . $username . "',password='" . $password . "',type='" . $type . "' where id='" . $id . "'";
-
-        if (mysqli_query($conn, $sql)) {
-            include_once('view/login.php');
+    public function Update_User(){
+        $sql = "UPDATE users SET first_name='" . $this->FirstName . "',last_name='" . $this->LastName . "', email='" . $this->Email . "',username='" . $this->Username . "',password='" . $this->Password . "',type='" . $this->Type . "' where id='" . $this->id . "'";
+    
+        if (mysqli_query($this->Conn, $sql)) {
+            include_once('View/LoginView.php');
         } else {
             echo "ERROR: Hush! Sorry $sql. " . mysqli_error($conn);
         }
-
+    
         // Close connection
         mysqli_close($conn);
-        ?>
-    </center>
-</body>
+    }
+}
 
-</html>
+// Create an instance of the Update_Data class
+$DbConnection = new Update_Data();
+
+// Call Delete_User method
+$DbConnection->Update_User();

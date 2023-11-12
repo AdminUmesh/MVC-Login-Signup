@@ -1,30 +1,27 @@
 <?php
 session_start();
-if (isset($_SESSION['cname'])) {
-  include_once('view/welcome.php');
+if (isset($_SESSION['Customer'])) {
+  include_once('View/CustomerView.php');
   exit;
 }
-if (isset($_SESSION['aname'])) {
-  include_once('view/admin.php');
+if (isset($_SESSION['Admin'])) {
+  include_once('View/AdminView.php');
   exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
       font-family: Arial, Helvetica, sans-serif;
     }
-
     form {
       border: 3px solid #f1f1f1;
     }
-
-    input[type=text],
-    input[type=password] {
+    input[type=text],input[type=password] {
       width: 100%;
       padding: 12px 20px;
       margin: 8px 0;
@@ -32,7 +29,6 @@ if (isset($_SESSION['aname'])) {
       border: 1px solid #ccc;
       box-sizing: border-box;
     }
-
     button {
       background-color: #04AA6D;
       color: white;
@@ -42,11 +38,9 @@ if (isset($_SESSION['aname'])) {
       cursor: pointer;
       width: 100%;
     }
-
     button:hover {
       opacity: 0.8;
     }
-
     .container {
       padding: 16px;
     }
@@ -54,9 +48,8 @@ if (isset($_SESSION['aname'])) {
 </head>
 
 <body>
-
   <h2>Login Form</h2>
-  <form action="logindata" method="post">
+  <form action="LoginData" method="post">
     <div class="container">
       <label for="uname"><b>Username</b></label>
       <input type="text" placeholder="Enter Username" name="username" required>
@@ -71,9 +64,8 @@ if (isset($_SESSION['aname'])) {
     </div>
 
     <div class="container signin">
-      <p>Don't have account <a href="register">Register</a>.</p>
+      <p>Don't have account <a href="RegisterView">Register</a>.</p>
     </div>
   </form>
 </body>
-
 </html>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
@@ -8,14 +7,11 @@
       font-family: Arial, Helvetica, sans-serif;
       background-color: black;
     }
-
     .container {
       padding: 8px;
       background-color: white;
     }
-
-    input[type=text],
-    input[type=password] {
+    input[type=text],input[type=password] {
       width: 100%;
       padding: 8px;
       margin: 5px 0 12px 0;
@@ -23,12 +19,10 @@
       border: none;
       background: #f1f1f1;
     }
-
     hr {
       border: 1px solid #f1f1f1;
       margin-bottom: 25px;
     }
-
     .update {
       color: #04AA6D;
     }
@@ -38,11 +32,14 @@
 <body>
   <?php
   session_unset();
-  session_destroy();
-  require_once('model/dbconnection.php');
+  require_once('Model/DbConnection.php');
+  $DB_Connection_Instance=new DB_Connection();
+  $conn=$DB_Connection_Instance->conn;
+
   $id = $_REQUEST['getID'];
   $query = "select * from users where id='" . $id . "'";
   $result = mysqli_query($conn, $query);
+
   while ($row = mysqli_fetch_assoc($result)) {
     $first_name = $row['first_name'];
     $last_name = $row['last_name'];
@@ -50,19 +47,19 @@
     $username = $row['username'];
     $password = $row['password'];
     $type = $row['type'];
-
   ?>
-    <form method="post" action="updatedata/?getID=<?php echo $row['id']; ?>">
+
+    <form method="post" action="UpdateData/?getID=<?php echo $row['id']; ?>">
       <div class="container">
         <center>
           <h1>Update</h1>
           <p>Please Edit value to update.</p>
         </center>
         <hr>
-        <label for="fname"><b>first name:</b></label>
+        <label for="fname"><b>First name:</b></label>
         <input type="text" placeholder="Enter first name" name="fname" id="fname" value="<?php echo $first_name; ?>" required>
 
-        <label for="lname"><b>last name:</b></label>
+        <label for="lname"><b>Last name:</b></label>
         <input type="text" placeholder="Enter last name" name="lname" id="lname" value="<?php echo $last_name; ?>" required>
 
         <label for="email"><b>Email</b></label>
@@ -82,10 +79,6 @@
       </div>
       </div>
     </form>
-
 </body>
-
 </html>
-
-<?php
-  }
+<?php } ?>

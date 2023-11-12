@@ -1,43 +1,55 @@
-<!DOCTYPE html>
-<html>
+<?php
+require('Model/DbConnection.php');
+class Register_Data{
+    public $Conn;
+    public $FirstName;
+    public $LastName;
+    public $Gender;
+    public $Email;
+    public $Username;
+    public $Password;
+    public $Type;
+    
+    public function __construct(){
+        $DB_Connection_Instance=new DB_Connection();
+        $this->Conn=$DB_Connection_Instance->conn;
 
-<head>
-    <title>Insert Page page</title>
-</head>
+        $this->FirstName =  $_REQUEST['fname'];
+        $this->LastName = $_REQUEST['lname'];
+        $this->Gender =  $_REQUEST['gender'];
+        $this->Email = $_REQUEST['email'];
+        $this->Username = $_REQUEST['username'];
+        $this->Password = $_REQUEST['password'];
 
-<body>
-    <center>
-        <?php
-        require('model/dbconnection.php');
-
-        $first_name =  $_REQUEST['fname'];
-        $last_name = $_REQUEST['lname'];
-        $gender =  $_REQUEST['gender'];
-        $email = $_REQUEST['email'];
-        $username = $_REQUEST['username'];
-        $password = $_REQUEST['password'];
         if (isset($_REQUEST['type'])) {
-            $type = $_REQUEST['type'];
+            $this->Type = $_REQUEST['type'];
         } else {
-            $type = "c";
+            $this->Type = "c";
         }
+    }
 
-        $sql = "INSERT INTO `users`(`first_name`, `last_name`, `gender`, `email`, `username`, `password`, `type`) VALUES ('$first_name','$last_name','$gender','$email','$username','$password','$type')";
-        if (mysqli_query($conn, $sql)) {
+    public function Register_User(){
+        $sql = "INSERT INTO `users`(`first_name`, `last_name`, `gender`, `email`, `username`, `password`, `type`) VALUES ('$this->FirstName','$this->LastName','$this->Gender','$this->Email','$this->Username','$this->Password','$this->Type')";
+        
+        if (mysqli_query($this->Conn, $sql)) {
             session_start();
-            if (isset($_SESSION['aname'])) {
-                include_once('view/admin.php');
+            if (isset($_SESSION['Admin'])) {
+                include_once('View/AdminView.php');
             } else {
                 echo "registered Successfull";
                 exit;
             }
         } else {
-            echo "ERROR: Hush! Sorry $sql. " . mysqli_error($conn);
+            echo "ERROR: Hush! Sorry $sql. " . mysqli_error($this->Conn);
         }
+
         // Close connection
         mysqli_close($conn);
-        ?>
-    </center>
-</body>
+    }
+}
 
-</html>
+// Create an instance of the Register_Data class
+$DbConnection = new Register_Data();
+
+// Call Delete_User method
+$DbConnection->Register_User();

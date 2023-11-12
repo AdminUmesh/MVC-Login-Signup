@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,7 +8,6 @@
 </head>
 
 <body>
-    <h1>Error:-page not found</h1>
+    <h1>Error:-Page not found</h1>
 </body>
-
 </html>

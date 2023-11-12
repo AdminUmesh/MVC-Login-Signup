@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,24 +9,26 @@
         body {
             background-color: lightpink;
         }
-
-        table,
-        tr,
-        td {
+        table,tr,td {
             border: 1px solid black;
         }
-
-        tr,
-        td {
+        tr,td {
             background-color: aquamarine;
         }
-
-        #edt {
+        #Edit_id {
             background-color: chartreuse;
         }
-
-        #dlt {
+        #Delete_id {
             background-color: crimson;
+        }
+        #ins {
+            background-color: #04AA6D;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 20%;
         }
     </style>
 </head>
@@ -35,17 +36,19 @@
 <body>
     <center>
         <?php
-        //session_start();
-        require('model/dbconnection.php');
-        if (isset($_SESSION['aname'])) {
+        require_once('Model/DbConnection.php');
+        $DB_Connection_Instance=new DB_Connection();
+        $conn=$DB_Connection_Instance->conn;
+        
+        if (isset($_SESSION['Admin'])) {
             $query = "select * from users";
             $result = mysqli_query($conn, $query);
         } else {
             echo "You are already login as customer page" . "<br>";
-        ?><a href="logout">Logout</a><?php
-                                    exit;
-                                }
-                                    ?>
+        ?>
+        <a href="Logout">Logout</a>
+        <?php exit;} ?>
+        
         <div>
             <h2>Customer Details</h2>
         </div>
@@ -63,9 +66,7 @@
                     <td><strong>Edit</strong></td>
                     <td><strong>Delete</strong></td>
                 </tr>
-                <?php
-                while ($row = mysqli_fetch_assoc($result)) {
-                ?>
+                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
                     <td><?php echo $row['id']; ?></td>
                     <td><?php echo $row['first_name']; ?></td>
                     <td><?php echo $row['last_name']; ?></td>
@@ -74,20 +75,18 @@
                     <td><?php echo $row['username']; ?></td>
                     <td><?php echo $row['password']; ?></td>
                     <td><?php echo $row['type']; ?></td>
-                    <td><a href="update/?getID=<?php echo $row['id']; ?>"><button id=edt>Edit</button></a></td>
-                    <td><a href="deletedata/?del=<?php echo $row['id']; ?>"><button id=dlt>Delete</button></a></td>
+                    <td><a href="UpdateView/?getID=<?php echo $row['id']; ?>"><button id=Edit_id>Edit</button></a></td>
+                    <td><a href="DeleteData/?del=<?php echo $row['id']; ?>"><button id=Delete_id>Delete</button></a></td>
                     </tr>
-                <?php
-                }
-                ?>
+                <?php } ?>
             </table>
         </div>
-        <?php
-        require_once('view/admin_insert.php');
-        ?>
-        <a id="out" href="logout">Logout</a>
-    </center>
-    <script></script>
-</body>
 
+        <form action="InsertView">
+        <button id="ins" value="submit">Insert New Customer</button>
+        </form>
+
+        <a id="out" href="Logout">Logout</a>
+    </center>
+</body>
 </html>

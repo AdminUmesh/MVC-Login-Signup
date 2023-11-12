@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,15 +16,14 @@
     <center>
         <?php
         //session_start();
-        if (isset($_SESSION['cname'])) {
-            echo "welcome to the customer page";
+        if (isset($_SESSION['Customer'])) {
+            echo "Welcome to the customer page";
         } else {
-            echo "username or password is wrong";
+            echo "Username or Password is wrong";
             exit;
         }
         ?>
-        <br><a href="logout">Logout</a>
+        <br><a href="Logout">Logout</a>
     </center>
 </body>
-
 </html>

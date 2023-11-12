@@ -1,51 +1,50 @@
-<!DOCTYPE html>
-<html>
+<?php
+require('Model/DbConnection.php');
+class LoginData{
 
-<head>
-    <title>login</title>
-    <style>
-        body {
-            background-color: aliceblue;
-        }
+    public $username;
+    public $password;
+    public $adminSQL;
+    public $adminData;
+    public $customerSQL;
+    public $customerData;
+    public $conn;
 
-        #button {
-            float: right;
-            background-color: aqua;
-        }
-    </style>
-</head>
+    public function __construct(){
+        // Create an instance of ClassA
+        $DbConnection_Instance = new DB_Connection();
+        $this->conn= $DbConnection_Instance->conn;
 
-<body>
-    <center>
-        <?php
+        $this->username = $_REQUEST['username'];
+        $this->password = $_REQUEST['password'];
 
-        require('model/dbconnection.php');
+        $this->adminSQL = "SELECT * FROM users WHERE username='$this->username' AND password='$this->password' AND type='a'";
+        $this->adminData = mysqli_query($this->conn, $this->adminSQL);
+    
+        $this->customerSQL = "SELECT * FROM users WHERE username='$this->username' AND password='$this->password' AND type='c'";
+        $this->customerData = mysqli_query($this->conn, $this->customerSQL);
+    }
 
-        $username = $_REQUEST['username'];
-        $password = $_REQUEST['password'];
 
-        $sqla = "SELECT * FROM users WHERE username='$username' AND password='$password' AND type='a'";
-        $resulta = mysqli_query($conn, $sqla);
-
-        $sqlc = "SELECT * FROM users WHERE username='$username' AND password='$password' AND type='c'";
-        $resultc = mysqli_query($conn, $sqlc);
-
-        if (mysqli_num_rows($resultc) > 0) {
+    public function MainPage(){
+        if (mysqli_num_rows($this->customerData) > 0) {
             session_start();
-            $_SESSION['cname'] = "customer";
-            require __DIR__ . './../view/welcome.php';
-        } elseif (mysqli_num_rows($resulta) > 0) {
+            $_SESSION['Customer'] = "customer";
+            require __DIR__ . './../View/CustomerView.php';
+        } elseif (mysqli_num_rows($this->adminData) > 0) {
             session_start();
-            $_SESSION['aname'] = "admin";
-            require __DIR__ . './../view/admin.php';
+            $_SESSION['Admin'] = "admin";
+            require __DIR__ . './../View/AdminView.php';
         } else {
-            require __DIR__ . './../view/welcome.php';
+            require __DIR__ . './../View/CustomerView.php';
         }
         // Close connection
-        mysqli_close($conn);
+        mysqli_close($this->conn);
+    }
+}
 
-        ?>
-    </center>
-</body>
+// Create an instance of the LoginData class
+$LoginData_Instance = new LoginData();
 
-</html>
+// Create the table
+$LoginData_Instance->MainPage();

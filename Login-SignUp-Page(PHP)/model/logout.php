@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,7 +21,6 @@
         echo "You've been logged out";
         ?>
     </center>
-    <center><a href="login">login</a></center>
+    <center><a href="LoginView">login</a></center>
 </body>
-
 </html>
